@@ -15,9 +15,6 @@
 
   "environment": "*",
   "entrypoints": {
-    "client": [
-      "net.digitalpear.snifferiety.client.SnifferietyClient"
-    ],
     "main": [
       "net.digitalpear.snifferiety.Snifferiety"
     ]
