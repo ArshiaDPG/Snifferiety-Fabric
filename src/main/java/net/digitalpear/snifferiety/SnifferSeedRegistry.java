@@ -10,12 +10,23 @@ import java.util.Objects;
 
 public class SnifferSeedRegistry {
     private static final Logger LOGGER = LoggerFactory.getLogger(SnifferSeedRegistry.class);
+
+
+    /*
+        List of items and their weights.
+     */
     public static final Map<Item, Integer> SNIFFER_DROP_MAP = new HashMap<>();
 
     public static void register(Item seed, int weight) {
+        /*
+            Make sure neither input value is null.
+         */
         requireNonNullAndAxisProperty(seed, "seed item");
         requireNonNullAndAxisProperty(weight, "drop weight");
 
+        /*
+            If item already exists in the list, the override it.
+         */
         if (SNIFFER_DROP_MAP.containsKey(seed)){
             Item old = getKey(SNIFFER_DROP_MAP, seed);
             SNIFFER_DROP_MAP.put(seed, weight);
@@ -35,7 +46,7 @@ public class SnifferSeedRegistry {
         Objects.requireNonNull(weight, name + " cannot be null");
     }
 
-    public static Item getKey(Map<Item, Integer> map,Item key)
+    public static Item getKey(Map<Item, Integer> map, Item key)
     {
         if(map.containsKey(key)) {
             return key;

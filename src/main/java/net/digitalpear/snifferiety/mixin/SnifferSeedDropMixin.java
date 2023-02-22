@@ -17,8 +17,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
-import java.util.List;
-
 @Mixin(SnifferEntity.class)
 public class SnifferSeedDropMixin extends AnimalEntity {
 
@@ -29,6 +27,10 @@ public class SnifferSeedDropMixin extends AnimalEntity {
 
     @ModifyVariable(method = "dropSeeds", at = @At("STORE"), ordinal = 0)
     private ItemStack getSeed(ItemStack itemStack){
+
+        /*
+            Adds torchflower to the loot table.
+         */
         SnifferSeedRegistry.register(Items.TORCHFLOWER_SEEDS, 5);
 
         /*
