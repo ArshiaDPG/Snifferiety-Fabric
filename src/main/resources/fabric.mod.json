@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "id": "snifferiety",
+  "version": "${version}",
+
+  "name": "Snifferiety",
+  "description": "Allows the adding of more plants to the sniffer's digging loot table.",
+  "authors": [
+    "DigitalPear"
+  ],
+  "contact": {},
+
+  "license": "MIT",
+  "icon": "assets/snifferiety/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "net.digitalpear.snifferiety.client.SnifferietyClient"
+    ],
+    "main": [
+      "net.digitalpear.snifferiety.Snifferiety"
+    ]
+  },
+
+          "mixins": [
+        "snifferiety.mixins.json"
+      ],
+    
+  "depends": {
+    "fabricloader": ">=0.14.14",
+              "fabric": "*",
+          "minecraft": "~1.19"
+  }
+}
