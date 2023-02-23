@@ -9,7 +9,6 @@ import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.passive.SnifferEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
@@ -19,20 +18,12 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 @Mixin(SnifferEntity.class)
 public class SnifferSeedDropMixin extends AnimalEntity {
-
-
     protected SnifferSeedDropMixin(EntityType<? extends AnimalEntity> entityType, World world) {
         super(entityType, world);
     }
 
     @ModifyVariable(method = "dropSeeds", at = @At("STORE"), ordinal = 0)
     private ItemStack getSeed(ItemStack itemStack){
-
-        /*
-            Adds torchflower to the loot table.
-         */
-        SnifferSeedRegistry.register(Items.TORCHFLOWER_SEEDS, 5);
-
         /*
             Add items from map to the list.
          */
@@ -46,6 +37,6 @@ public class SnifferSeedDropMixin extends AnimalEntity {
     @Nullable
     @Override
     public PassiveEntity createChild(ServerWorld world, PassiveEntity entity) {
-        return null;
+        return EntityType.SNIFFER.create(world);
     }
 }
