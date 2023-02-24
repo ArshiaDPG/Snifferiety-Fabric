@@ -4,7 +4,6 @@ import com.google.gson.*;
 import net.digitalpear.snifferiety.SnifferSeedRegistry;
 import net.digitalpear.snifferiety.Snifferiety;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.registry.Registries;
 import net.minecraft.resource.JsonDataLoader;
 import net.minecraft.resource.Resource;

@@ -25,9 +25,13 @@ public class Snifferiety implements ModInitializer {
     @Override
     public void onInitialize() {
 
-        //Example of usage
+        //Examples of usage
 
-        //SnifferSeedRegistry.register(Items.APPLE, 4);
+        /*
+            SnifferSeedRegistry.register(Items.APPLE, 4);
+
+            SnifferSeedRegistry.register(4, Items.APPLE, Items.CACTUS, etc.);
+         */
 
         ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new SnifferJsonReader());
     }
