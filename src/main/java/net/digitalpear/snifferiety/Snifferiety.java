@@ -17,11 +17,6 @@ public class Snifferiety implements ModInitializer {
         return new Identifier(MOD_ID, text);
     }
 
-
-    /*
-        Ideas:
-        -Biome specific drops.
-     */
     @Override
     public void onInitialize() {
 
