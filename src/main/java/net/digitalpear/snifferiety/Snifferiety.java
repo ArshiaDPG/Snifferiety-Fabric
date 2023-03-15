@@ -23,14 +23,19 @@ public class Snifferiety implements ModInitializer {
     @Override
     public void onInitialize() {
 
-        //Examples of usage
+
 
         /*
+            Examples of usage
+
+
             SnifferSeedRegistry.register(Items.APPLE, 40);
 
             SnifferSeedRegistry.register(40, Items.APPLE, Items.CACTUS, etc.);
 
-            SnifferSeedRegistry.registerWhiteListable(Items.CACTUS, 600, BlockTags.SAND);
+            SnifferSeedRegistry.registerWhiteListable(Items.CACTUS, 60, BlockTags.SAND);
+
+            SnifferSeedRegistry.registerWhiteListable(60, BlockTags.SAND, Items.CACTUS, etc.);
          */
 
 
