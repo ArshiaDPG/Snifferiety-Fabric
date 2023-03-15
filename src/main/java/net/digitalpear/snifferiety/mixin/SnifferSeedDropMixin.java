@@ -1,8 +1,8 @@
 package net.digitalpear.snifferiety.mixin;
 
 
-import net.digitalpear.snifferiety.mapcollection.RandomCollection;
-import net.digitalpear.snifferiety.mapcollection.SnifferSeedRegistry;
+import net.digitalpear.snifferiety.registry.SnifferSeedRegistry;
+import net.digitalpear.snifferiety.util.RandomCollection;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.PassiveEntity;
@@ -40,31 +40,26 @@ public abstract class SnifferSeedDropMixin extends AnimalEntity {
             Filter based on biome and block that is being dug.
             Blocks that are not part of any whitelist will still be added.
          */
-        SnifferSeedRegistry.getSnifferDropMap().forEach(((seed, weight) -> {
-            if (SnifferSeedRegistry.getSnifferDropWhitelist().containsKey(seed)){
-                if (world.getBlockState(getDigPos().down()).isIn(SnifferSeedRegistry.getSnifferDropWhitelist().get(seed))){
-                    itemRandomCollection.add(weight, seed);
-                }
+        SnifferSeedRegistry.getSnifferDropMap().forEach((item, seedProperties) -> {
+            if (world.getBlockState(getDigPos().down()).isIn(seedProperties.getWhitelist()) && !world.getBlockState(getDigPos().down()).isIn(seedProperties.getBlacklist())){
+                itemRandomCollection.add(seedProperties.getWeight(), item);
             }
-            else{
-                itemRandomCollection.add(weight, seed);
-            }
+        });
 
-        }));
         return new ItemStack(itemRandomCollection.next());
     }
+
 
     @Inject(method = "isDiggable", at = @At("RETURN"), cancellable = true)
     private void injectMethod(BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
         if (this.world.getBlockState(pos.up()).isAir()){
-            SnifferSeedRegistry.getSnifferDropWhitelist().forEach((seed, blocks) -> {
-                if (world.getBlockState(pos).isIn(SnifferSeedRegistry.getSnifferDropWhitelist().get(seed))){
+            SnifferSeedRegistry.getSnifferDropMap().forEach((item, seedProperties) -> {
+                if (world.getBlockState(pos).isIn(seedProperties.getWhitelist()) && !world.getBlockState(pos).isIn(seedProperties.getBlacklist())){
                     cir.setReturnValue(true);
                 }
             });
         }
     }
-
 
 
     @Nullable

@@ -85,6 +85,7 @@ unifiedPublishing {
         displayName = "${project.minecraft_version}-${project.mod_version}" // Optional, name of the file
         changelog = '''<ul>
   <li>Added whitelist functionality. It is now possible to only allow blocks to be dug up when the sniffer digs certain blocks. This can be determined using tags.</li>
+  <li>The mod's wiki has been updated to showcase examples of using whitelists.</li>
 </ul> ''' // Optional, in markdown format
         releaseType = "release" // Optional, use "release", "beta" or "alpha"
         gameVersions = ["${project.minecraft_version}"]

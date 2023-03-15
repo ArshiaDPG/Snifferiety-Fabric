@@ -1,7 +1,8 @@
 package net.digitalpear.snifferiety;
 
-import net.digitalpear.snifferiety.mapcollection.SnifferJsonReader;
-import net.digitalpear.snifferiety.mapcollection.SnifferSeedRegistry;
+import net.digitalpear.snifferiety.util.SnifferJsonReader;
+import net.digitalpear.snifferiety.registry.SnifferSeedRegistry;
+import net.digitalpear.snifferiety.registry.SeedProperties;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.item.Items;
@@ -22,23 +23,21 @@ public class Snifferiety implements ModInitializer {
 
     @Override
     public void onInitialize() {
-
-
-
         /*
             Examples of usage
 
+        SnifferSeedRegistry.register(ITEM, new SeedProperties(WEIGHT));
 
-            SnifferSeedRegistry.register(Items.APPLE, 40);
+        SnifferSeedRegistry.register(ITEM, new SeedProperties(WEIGHT, WHITELIST));
 
-            SnifferSeedRegistry.register(40, Items.APPLE, Items.CACTUS, etc.);
-
-            SnifferSeedRegistry.registerWhiteListable(Items.CACTUS, 60, BlockTags.SAND);
-
-            SnifferSeedRegistry.registerWhiteListable(60, BlockTags.SAND, Items.CACTUS, etc.);
+        SnifferSeedRegistry.register(ITEM, new SeedProperties(WEIGHT, WHITELIST, BLACKLIST));
          */
 
-        SnifferSeedRegistry.registerWhiteListable(Items.TORCHFLOWER_SEEDS, 70, BlockTags.SNIFFER_DIGGABLE_BLOCK);
+        SnifferSeedRegistry.register(Items.TORCHFLOWER_SEEDS, new SeedProperties(70));
+
+        SnifferSeedRegistry.register(Items.CACTUS, new SeedProperties(70, BlockTags.SAND));
+
+        SnifferSeedRegistry.register(Items.IRON_NUGGET, new SeedProperties(70, BlockTags.SHOVEL_MINEABLE, BlockTags.SAND));
 
 
         ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new SnifferJsonReader());

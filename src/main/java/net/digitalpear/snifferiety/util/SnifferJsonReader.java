@@ -1,9 +1,13 @@
-package net.digitalpear.snifferiety.mapcollection;
+package net.digitalpear.snifferiety.util;
 
 import com.google.gson.*;
 import net.digitalpear.snifferiety.Snifferiety;
+import net.digitalpear.snifferiety.registry.SeedProperties;
+import net.digitalpear.snifferiety.registry.SnifferSeedRegistry;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.resource.JsonDataLoader;
 import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
@@ -17,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
@@ -43,9 +48,13 @@ public class SnifferJsonReader extends JsonDataLoader implements ResourceReloade
                         if (jsonObject != null) {
                             JsonArray entryList = jsonObject.get("entries").getAsJsonArray();
                             for (JsonElement entry : entryList) {
+                                List<String> whitelist = List.of(entry.getAsJsonObject().get("whitelist").getAsString().split(":"));
+                                List<String> blacklist = List.of(entry.getAsJsonObject().get("blacklist").getAsString().split(":"));
                                 SnifferSeedRegistry.register(Registries.ITEM.get(new Identifier(
                                                 entry.getAsJsonObject().get("seed").getAsString())),
-                                        entry.getAsJsonObject().get("weight").getAsInt());
+                                        new SeedProperties(entry.getAsJsonObject().get("weight").getAsInt(),
+                                                TagKey.of(RegistryKeys.BLOCK, new Identifier(whitelist.get(0),whitelist.get(1))),
+                                                TagKey.of(RegistryKeys.BLOCK, new Identifier(blacklist.get(0),blacklist.get(1)))));
                             }
                         }
                     } catch (RuntimeException | IOException exception) {

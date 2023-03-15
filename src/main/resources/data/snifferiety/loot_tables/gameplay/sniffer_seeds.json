@@ -1,4 +1,10 @@
 {
-  "entries": [
-  ]
+   "entries":[
+      {
+         "seed": "minecraft:torchflower_seeds",
+         "weight": 70,
+         "whitelist": "minecraft:sniffer_diggable_block",
+         "blacklist": "snifferiety:nothing"
+      }
+   ]
 }
