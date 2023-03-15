@@ -38,6 +38,8 @@ public class Snifferiety implements ModInitializer {
             SnifferSeedRegistry.registerWhiteListable(60, BlockTags.SAND, Items.CACTUS, etc.);
          */
 
+        SnifferSeedRegistry.registerWhiteListable(Items.TORCHFLOWER_SEEDS, 70, BlockTags.SNIFFER_DIGGABLE_BLOCK);
+
 
         ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new SnifferJsonReader());
     }
