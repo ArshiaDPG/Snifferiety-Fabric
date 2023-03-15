@@ -1,8 +1,8 @@
 package net.digitalpear.snifferiety.mixin;
 
 
-import net.digitalpear.snifferiety.RandomCollection;
-import net.digitalpear.snifferiety.SnifferSeedRegistry;
+import net.digitalpear.snifferiety.mapcollection.RandomCollection;
+import net.digitalpear.snifferiety.mapcollection.SnifferSeedRegistry;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.PassiveEntity;
@@ -42,7 +42,7 @@ public abstract class SnifferSeedDropMixin extends AnimalEntity {
          */
         SnifferSeedRegistry.getSnifferDropMap().forEach(((seed, weight) -> {
             if (SnifferSeedRegistry.getSnifferDropWhitelist().containsKey(seed)){
-                if (SnifferSeedRegistry.getSnifferDropWhitelist().get(seed).contains(world.getBlockState(getDigPos().down()).getBlock())){
+                if (world.getBlockState(getDigPos().down()).isIn(SnifferSeedRegistry.getSnifferDropWhitelist().get(seed))){
                     itemRandomCollection.add(weight, seed);
                 }
             }
@@ -58,7 +58,7 @@ public abstract class SnifferSeedDropMixin extends AnimalEntity {
     private void injectMethod(BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
         if (this.world.getBlockState(pos.up()).isAir()){
             SnifferSeedRegistry.getSnifferDropWhitelist().forEach((seed, blocks) -> {
-                if (blocks.contains(world.getBlockState(pos).getBlock())){
+                if (world.getBlockState(pos).isIn(SnifferSeedRegistry.getSnifferDropWhitelist().get(seed))){
                     cir.setReturnValue(true);
                 }
             });

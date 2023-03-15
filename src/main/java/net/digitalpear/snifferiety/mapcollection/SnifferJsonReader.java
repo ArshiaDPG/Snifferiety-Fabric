@@ -1,7 +1,6 @@
 package net.digitalpear.snifferiety.mapcollection;
 
 import com.google.gson.*;
-import net.digitalpear.snifferiety.SnifferSeedRegistry;
 import net.digitalpear.snifferiety.Snifferiety;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.minecraft.registry.Registries;

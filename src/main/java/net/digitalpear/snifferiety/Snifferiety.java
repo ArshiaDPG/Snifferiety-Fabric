@@ -1,10 +1,11 @@
 package net.digitalpear.snifferiety;
 
 import net.digitalpear.snifferiety.mapcollection.SnifferJsonReader;
+import net.digitalpear.snifferiety.mapcollection.SnifferSeedRegistry;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
-import net.minecraft.block.Blocks;
 import net.minecraft.item.Items;
+import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
@@ -29,6 +30,8 @@ public class Snifferiety implements ModInitializer {
 
             SnifferSeedRegistry.register(40, Items.APPLE, Items.CACTUS, etc.);
          */
+
+        SnifferSeedRegistry.registerWhiteListable(Items.CACTUS, 600, BlockTags.SAND);
 
         ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new SnifferJsonReader());
     }
