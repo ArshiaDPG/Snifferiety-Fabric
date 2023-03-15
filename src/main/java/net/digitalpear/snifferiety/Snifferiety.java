@@ -3,6 +3,8 @@ package net.digitalpear.snifferiety;
 import net.digitalpear.snifferiety.mapcollection.SnifferJsonReader;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+import net.minecraft.block.Blocks;
+import net.minecraft.item.Items;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
@@ -23,9 +25,9 @@ public class Snifferiety implements ModInitializer {
         //Examples of usage
 
         /*
-            SnifferSeedRegistry.register(Items.APPLE, 4);
+            SnifferSeedRegistry.register(Items.APPLE, 40);
 
-            SnifferSeedRegistry.register(4, Items.APPLE, Items.CACTUS, etc.);
+            SnifferSeedRegistry.register(40, Items.APPLE, Items.CACTUS, etc.);
          */
 
         ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new SnifferJsonReader());
