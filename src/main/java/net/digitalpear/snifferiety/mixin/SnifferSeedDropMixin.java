@@ -37,7 +37,8 @@ public abstract class SnifferSeedDropMixin extends AnimalEntity {
         RandomCollection<Item> itemRandomCollection = new RandomCollection<>();
 
         /*
-            Filter based on biome
+            Filter based on biome and block that is being dug.
+            Blocks that are not part of any whitelist will still be added.
          */
         SnifferSeedRegistry.getSnifferDropMap().forEach(((seed, weight) -> {
             if (SnifferSeedRegistry.getSnifferDropWhitelist().containsKey(seed)){
