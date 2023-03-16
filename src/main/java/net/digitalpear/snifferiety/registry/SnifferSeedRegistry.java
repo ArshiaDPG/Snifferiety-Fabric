@@ -25,11 +25,11 @@ public class SnifferSeedRegistry {
         if (SNIFFER_DROP_MAP.containsKey(seed)){
             Item old = getKey(SNIFFER_DROP_MAP, seed.asItem());
             SNIFFER_DROP_MAP.put(seed.asItem(), seedProperties);
-            LOGGER.debug("Replaced old sniffing mapping from {} to {} with weight {}", old, seed, seedProperties.getWeight());
+            LOGGER.debug("Replaced old sniffing mapping from {} to {} with seed properties {}", old, seed, seedProperties.getWeight());
         }
         else{
             SNIFFER_DROP_MAP.put(seed.asItem(), seedProperties);
-            LOGGER.debug("Set new sniffing mapping {} with weight {}.", seed, seedProperties.getWeight());
+            LOGGER.debug("Set new sniffing mapping {} with seed properties {}.", seed, seedProperties.getWeight());
         }
     }
 

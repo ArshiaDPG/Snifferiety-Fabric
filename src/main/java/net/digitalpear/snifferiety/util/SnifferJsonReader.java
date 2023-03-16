@@ -50,10 +50,17 @@ public class SnifferJsonReader extends JsonDataLoader implements ResourceReloade
                             for (JsonElement entry : entryList) {
                                 List<String> whitelist = List.of(entry.getAsJsonObject().get("whitelist").getAsString().split(":"));
                                 List<String> blacklist = List.of(entry.getAsJsonObject().get("blacklist").getAsString().split(":"));
-                                SnifferSeedRegistry.register(Registries.ITEM.get(new Identifier(
-                                                entry.getAsJsonObject().get("seed").getAsString())),
-                                        new SeedProperties(entry.getAsJsonObject().get("weight").getAsInt(),
+                                SnifferSeedRegistry.register(
+                                        //Seed
+                                        Registries.ITEM.get(new Identifier(entry.getAsJsonObject().get("seed").getAsString())),
+
+                                        //Properties
+                                        new SeedProperties(
+                                                //Weight
+                                                entry.getAsJsonObject().get("weight").getAsInt(),
+                                                //Whitelist
                                                 TagKey.of(RegistryKeys.BLOCK, new Identifier(whitelist.get(0),whitelist.get(1))),
+                                                //Blacklist
                                                 TagKey.of(RegistryKeys.BLOCK, new Identifier(blacklist.get(0),blacklist.get(1)))));
                             }
                         }

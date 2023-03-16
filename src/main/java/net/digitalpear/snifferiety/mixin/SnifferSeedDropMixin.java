@@ -3,12 +3,19 @@ package net.digitalpear.snifferiety.mixin;
 
 import net.digitalpear.snifferiety.registry.SnifferSeedRegistry;
 import net.digitalpear.snifferiety.util.RandomCollection;
+import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
+import net.fabricmc.fabric.impl.biome.modification.BiomeSelectionContextImpl;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.passive.SnifferEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.DynamicRegistryManager;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.tag.BiomeTags;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -31,17 +38,15 @@ public abstract class SnifferSeedDropMixin extends AnimalEntity {
 
     @ModifyVariable(method = "dropSeeds", at = @At("STORE"), ordinal = 0)
     private ItemStack getSeed(ItemStack itemStack){
-        /*
-            Add items from map to the list.
-         */
         RandomCollection<Item> itemRandomCollection = new RandomCollection<>();
 
         /*
-            Filter based on biome and block that is being dug.
-            Blocks that are not part of any whitelist will still be added.
+            Filter based on block that is being dug.
          */
         SnifferSeedRegistry.getSnifferDropMap().forEach((item, seedProperties) -> {
-            if (world.getBlockState(getDigPos().down()).isIn(seedProperties.getWhitelist()) && !world.getBlockState(getDigPos().down()).isIn(seedProperties.getBlacklist())){
+            if (world.getBlockState(getDigPos().down()).isIn(seedProperties.getWhitelist()) &&
+                    !world.getBlockState(getDigPos().down()).isIn(seedProperties.getBlacklist())){
+
                 itemRandomCollection.add(seedProperties.getWeight(), item);
             }
         });
@@ -54,7 +59,9 @@ public abstract class SnifferSeedDropMixin extends AnimalEntity {
     private void injectMethod(BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
         if (this.world.getBlockState(pos.up()).isAir()){
             SnifferSeedRegistry.getSnifferDropMap().forEach((item, seedProperties) -> {
-                if (world.getBlockState(pos).isIn(seedProperties.getWhitelist()) && !world.getBlockState(pos).isIn(seedProperties.getBlacklist())){
+                if (world.getBlockState(pos).isIn(seedProperties.getWhitelist()) &&
+                        !world.getBlockState(pos).isIn(seedProperties.getBlacklist())){
+
                     cir.setReturnValue(true);
                 }
             });
