@@ -2,12 +2,11 @@ package net.digitalpear.snifferiety;
 
 import net.digitalpear.snifferiety.registry.SeedProperties;
 import net.digitalpear.snifferiety.registry.SnifferSeedRegistry;
-import net.digitalpear.snifferiety.util.BiomeFilterJsonReader;
 import net.digitalpear.snifferiety.util.SnifferJsonReader;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.item.Items;
-import net.minecraft.registry.tag.BiomeTags;
+import net.minecraft.registry.Registries;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
@@ -52,6 +51,5 @@ public class Snifferiety implements ModInitializer {
         SnifferSeedRegistry.register(Items.PITCHER_POD, new SeedProperties(70));
 
         ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new SnifferJsonReader());
-        ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new BiomeFilterJsonReader());
     }
 }

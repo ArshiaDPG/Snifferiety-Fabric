@@ -1,10 +1,10 @@
 package net.digitalpear.snifferiety.registry;
 
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.passive.SnifferEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
-import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.Registries;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -20,26 +20,34 @@ public class SnifferSeedRegistry {
     private static final Logger LOGGER = LoggerFactory.getLogger(SnifferSeedRegistry.class);
 
     private static final Map<Item, SeedProperties> SNIFFER_DROP_MAP = new HashMap<>();
-    private static final Map<Item, TagKey<Biome>> BIOME_FILTER_MAP = new HashMap<>();
+    private static final Map<Item, TagKey<Biome>> BIOME_WHITELIST_MAP = new HashMap<>();
+    private static final Map<Item, TagKey<Biome>> BIOME_BLACKLIST_MAP = new HashMap<>();
 
     public static Map<Item, SeedProperties> getSnifferDropMap(){
-        Map<Item, SeedProperties> MAP = SNIFFER_DROP_MAP;
-        return MAP;
+        return SNIFFER_DROP_MAP;
     }
 
-    public static Map<Item, TagKey<Biome>> getBiomeFilterMap() {
-        Map<Item, TagKey<Biome>> MAP = BIOME_FILTER_MAP;
-        return MAP;
+    public static Map<Item, TagKey<Biome>> getBiomeWhitelistMap() {
+        return BIOME_WHITELIST_MAP;
     }
 
-    public static void registerBiomeFilter(Item seed, TagKey<Biome> biomes){
-        if (BIOME_FILTER_MAP.containsKey(seed)){
-            LOGGER.debug("Changed old biome filter value from {} to {} with {}", biomes, seed, biomes);
+    public static Map<Item, TagKey<Biome>> getBiomeBlacklistMap() {
+        return BIOME_BLACKLIST_MAP;
+    }
+
+    public static void registerBiomeWhitelist(Item seed, TagKey<Biome> biomes){
+        if (BIOME_WHITELIST_MAP.containsKey(seed)){
+            LOGGER.debug("Changed old biome whitelist value from {} to {} with {}", biomes, seed, biomes);
         }
-        BIOME_FILTER_MAP.put(seed, biomes);
+        BIOME_WHITELIST_MAP.put(seed, biomes);
+    }
+    public static void registerBiomeBlacklist(Item seed, TagKey<Biome> biomes){
+        if (BIOME_BLACKLIST_MAP.containsKey(seed)){
+            LOGGER.debug("Changed old biome blacklist value from {} to {} with {}", biomes, seed, biomes);
+        }
+        BIOME_BLACKLIST_MAP.put(seed, biomes);
     }
 
-    @Deprecated
     public static void register(ItemConvertible seed, int weight) {
         register(seed, new SeedProperties(weight));
     }
@@ -58,6 +66,10 @@ public class SnifferSeedRegistry {
             SNIFFER_DROP_MAP.put(seed.asItem(), seedProperties);
             LOGGER.debug("Set new sniffing mapping {} with seed properties {}.", seed, seedProperties.getWeight());
         }
+        if (FabricLoader.getInstance().isDevelopmentEnvironment()){
+            LOGGER.info("Item " + Registries.ITEM.getId(seed.asItem()) + " will drop with whitelist " + seedProperties.getWhitelist().id() + ", and blacklist " + seedProperties.getBlacklist().id() + ".");
+
+        }
     }
 
     private static void requireNonNullAndAxisProperty(SeedProperties seedProperties, String name) {
@@ -74,11 +86,20 @@ public class SnifferSeedRegistry {
         return null;
     }
 
-    public static boolean isBiomeValid(Item seed, World world, BlockPos pos){
-        if (!BIOME_FILTER_MAP.containsKey(seed)){
+    private static boolean checkWhitelist(Item seed, World world, BlockPos pos){
+        if (!BIOME_WHITELIST_MAP.containsKey(seed)){
             return true;
         }
-        return world.getBiome(pos).isIn(BIOME_FILTER_MAP.get(seed));
+        return world.getBiome(pos).isIn(BIOME_WHITELIST_MAP.get(seed));
+    }
+    private static boolean checkBlacklist(Item seed, World world, BlockPos pos){
+        if (!BIOME_BLACKLIST_MAP.containsKey(seed)){
+            return true;
+        }
+        return !world.getBiome(pos).isIn(BIOME_BLACKLIST_MAP.get(seed));
+    }
+    public static boolean isBiomeValid(Item seed, World world, BlockPos pos){
+        return checkBlacklist(seed, world, pos) && checkWhitelist(seed, world, pos);
     }
 
     public static boolean willItemDropFromBlock(SeedProperties seedProperties, BlockState blockState) {

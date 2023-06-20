@@ -1,4 +1,12 @@
 {
    "entries":[
+      {
+         "seed":"minecraft:cherry_sapling",
+         "weight" : 700,
+         "block_whitelist": "minecraft:sand",
+         "block_whitelist": "snifferiety:nothing",
+         "biome_whitelist": "c:forest",
+         "biome_blacklist": "c:climate_dry"
+      }
    ]
 }

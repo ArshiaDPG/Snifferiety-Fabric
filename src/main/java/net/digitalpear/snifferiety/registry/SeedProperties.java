@@ -10,21 +10,18 @@ import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
 
 import java.util.Objects;
-import java.util.function.Predicate;
 
 public class SeedProperties {
     private int weight;
     private TagKey<Block> whitelist;
     private TagKey<Block> blacklist;
     public static final TagKey<Block> NOTHING = TagKey.of(RegistryKeys.BLOCK, new Identifier(Snifferiety.MOD_ID, "nothing"));
-    private Predicate<BiomeSelectionContext> biomeSelectionContextPredicate;
 
     public SeedProperties(int weight, TagKey<Block> blacklist, TagKey<Block> whitelist){
         requireNonNullAndAxisProperty(weight, "weight");
         requireNonNullAndAxisProperty(whitelist, "whitelist");
         requireNonNullAndAxisProperty(blacklist, "blacklist");
 
-        this.biomeSelectionContextPredicate = BiomeSelectors.all();
         this.weight = weight;
         this.whitelist = whitelist;
         this.blacklist = blacklist;
@@ -63,5 +60,17 @@ public class SeedProperties {
     }
     private static void requireNonNullAndAxisProperty(Integer weight, String name) {
         Objects.requireNonNull(weight, name + " cannot be null");
+    }
+
+    public void setBlacklist(TagKey<Block> blacklist) {
+        this.blacklist = blacklist;
+    }
+
+    public void setWeight(int weight) {
+        this.weight = weight;
+    }
+
+    public void setWhitelist(TagKey<Block> whitelist) {
+        this.whitelist = whitelist;
     }
 }
