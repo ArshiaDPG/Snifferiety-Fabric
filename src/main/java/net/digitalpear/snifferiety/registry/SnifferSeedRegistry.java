@@ -86,6 +86,8 @@ public class SnifferSeedRegistry {
         return null;
     }
 
+
+
     private static boolean checkWhitelist(Item seed, World world, BlockPos pos){
         if (!BIOME_WHITELIST_MAP.containsKey(seed)){
             return true;
@@ -102,38 +104,43 @@ public class SnifferSeedRegistry {
         return checkBlacklist(seed, world, pos) && checkWhitelist(seed, world, pos);
     }
 
-    public static boolean willItemDropFromBlock(SeedProperties seedProperties, BlockState blockState) {
-        if (seedProperties.getBlacklist() != SeedProperties.NOTHING || seedProperties.getWhitelist() != SeedProperties.NOTHING) {
 
-            if (seedProperties.getBlacklist() == SeedProperties.NOTHING) {
-                return blockState.isIn(seedProperties.getWhitelist());
 
-            } else if (seedProperties.getWhitelist() == SeedProperties.NOTHING) {
-                return !blockState.isIn(seedProperties.getBlacklist());
-
-            } else return blockState.isIn(seedProperties.getWhitelist()) && !blockState.isIn(seedProperties.getBlacklist());
+    private static boolean checkBlockWhitelist(Item seed, BlockState state){
+        if (getSnifferDropMap().get(seed).getWhitelist().id() == SeedProperties.NOTHING.id()){
+            return true;
         }
-        return false;
+        return state.isIn(getSnifferDropMap().get(seed).getWhitelist());
+    }
+    private static boolean checkBlockBlacklist(Item seed, BlockState state){
+        if (getSnifferDropMap().get(seed).getBlacklist().id() == SeedProperties.NOTHING.id()){
+            return true;
+        }
+        return !state.isIn(getSnifferDropMap().get(seed).getBlacklist());
+    }
+    public static boolean willItemDropFromBlock(Item seed, BlockState blockState) {
+        return checkBlockWhitelist(seed, blockState) && checkBlockBlacklist(seed, blockState);
     }
 
+
+
+
+    private static boolean checkBlockWhitelist(Item seed, World world, BlockPos pos){
+        if (getSnifferDropMap().get(seed).getWhitelist().id() == SeedProperties.NOTHING.id()){
+            return true;
+        }
+        return world.getBlockState(pos).isIn(getSnifferDropMap().get(seed).getWhitelist());
+    }
+    private static boolean checkBlockBlacklist(Item seed, World world, BlockPos pos){
+        if (getSnifferDropMap().get(seed).getBlacklist().id() == SeedProperties.NOTHING.id()){
+            return true;
+        }
+        return !world.getBlockState(pos).isIn(getSnifferDropMap().get(seed).getBlacklist());
+    }
     public static boolean checkDiggability(World world, BlockPos pos){
         if (!world.getBlockState(pos.up()).isAir()) {
             return false;
         }
-
-        for (Map.Entry<Item, SeedProperties> entry : SnifferSeedRegistry.getSnifferDropMap().entrySet()) {
-            SeedProperties seedProperties = entry.getValue();
-            if (seedProperties.getBlacklist() == null && seedProperties.getWhitelist() != null &&
-                    world.getBlockState(pos).isIn(seedProperties.getWhitelist())) {
-                return true;
-            } else if (seedProperties.getWhitelist() == null && seedProperties.getBlacklist() != null &&
-                    !world.getBlockState(pos).isIn(seedProperties.getBlacklist())) {
-                return true;
-            } else if (seedProperties.getWhitelist() != null && seedProperties.getBlacklist() != null &&
-                    world.getBlockState(pos).isIn(seedProperties.getWhitelist()) && !world.getBlockState(pos).isIn(seedProperties.getBlacklist())) {
-                return true;
-            }
-        }
-        return false;
+        return SnifferSeedRegistry.getSnifferDropMap().keySet().stream().anyMatch(item -> checkBlockWhitelist(item, world, pos) && checkBlockBlacklist(item, world, pos));
     }
 }

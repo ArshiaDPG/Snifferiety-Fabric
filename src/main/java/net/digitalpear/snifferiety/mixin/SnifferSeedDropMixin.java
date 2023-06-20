@@ -41,7 +41,7 @@ public abstract class SnifferSeedDropMixin extends AnimalEntity {
             Filter based on block that is being dug.
          */
         SnifferSeedRegistry.getSnifferDropMap().forEach((item, seedProperties) -> {
-            if (SnifferSeedRegistry.willItemDropFromBlock(seedProperties, this.getEntityWorld().getBlockState(pos)) && SnifferSeedRegistry.isBiomeValid(item,getWorld(), pos)) {
+            if (SnifferSeedRegistry.willItemDropFromBlock(item, this.getEntityWorld().getBlockState(pos)) && SnifferSeedRegistry.isBiomeValid(item,getWorld(), pos)) {
                 itemRandomCollection.add(seedProperties.getWeight(), item);
             }
         });
