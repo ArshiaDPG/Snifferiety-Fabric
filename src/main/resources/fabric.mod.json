@@ -6,7 +6,7 @@
   "name": "Snifferiety",
   "description": "Allows the adding of more plants to the sniffer's digging loot table.",
   "authors": [
-    ""
+    "DigitalPear"
   ],
   "contact": {},
 
@@ -19,14 +19,13 @@
       "net.digitalpear.snifferiety.Snifferiety"
     ]
   },
-
           "mixins": [
         "snifferiety.mixins.json"
       ],
-    
+
   "depends": {
-    "fabricloader": ">=0.14.14",
+    "fabricloader": ">=0.14.19",
               "fabric": "*",
-          "minecraft": "~1.19"
+          "minecraft": ">=1.20-"
   }
 }

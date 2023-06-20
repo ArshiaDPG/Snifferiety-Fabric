@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '1.1-SNAPSHOT'
+    id 'fabric-loom' version '1.2-SNAPSHOT'
     id 'maven-publish'
     id "me.shedaniel.unified-publishing" version "0.1.+"
 }
@@ -8,11 +8,6 @@ version = project.mod_version
 group = project.maven_group
 
 repositories {
-    // Add repositories to retrieve artifacts from in here.
-    // You should only use this when depending on other mods because
-    // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
-    // See https://docs.gradle.org/current/userguide/declaring_repositories.html
-    // for more information about repositories.
 }
 
 dependencies {
@@ -84,8 +79,7 @@ unifiedPublishing {
     project {
         displayName = "${project.minecraft_version}-${project.mod_version}" // Optional, name of the file
         changelog = '''<ul>
-  <li>Added whitelist functionality. It is now possible to only allow blocks to be dug up when the sniffer digs certain blocks. This can be determined using tags.</li>
-  <li>The mod's wiki has been updated to showcase examples of using whitelists.</li>
+  <li>Updated to 23w16a.</li>
 </ul> ''' // Optional, in markdown format
         releaseType = "release" // Optional, use "release", "beta" or "alpha"
         gameVersions = ["${project.minecraft_version}"]
@@ -106,13 +100,11 @@ unifiedPublishing {
         curseforge {
             token = System.getenv("CF_TOKEN")
             id = "830243" // Required, must be a string, ID of CurseForge project
-            gameVersions = ["1.20-Snapshot"]
         }
 
         modrinth {
             token = System.getenv("MODRINTH_TOKEN")
             id = "hFNhrnPy" // Required, must be a string, ID of Modrinth project
-
         }
     }
 }
