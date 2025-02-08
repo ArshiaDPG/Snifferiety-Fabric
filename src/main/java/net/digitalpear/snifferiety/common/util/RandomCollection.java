@@ -1,4 +1,4 @@
-package net.digitalpear.snifferiety.util;
+package net.digitalpear.snifferiety.common.util;
 
 import java.util.NavigableMap;
 import java.util.Random;

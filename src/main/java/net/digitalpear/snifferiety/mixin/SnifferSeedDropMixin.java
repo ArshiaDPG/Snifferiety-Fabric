@@ -1,13 +1,14 @@
 package net.digitalpear.snifferiety.mixin;
 
 
-import net.digitalpear.snifferiety.registry.SnifferSeedRegistry;
-import net.digitalpear.snifferiety.util.RandomCollection;
+import net.digitalpear.snifferiety.common.util.SnifferSeedEntry;
+import net.digitalpear.snifferiety.registry.SnifferSeedEntries;
+import net.digitalpear.snifferiety.common.util.RandomCollection;
+import net.digitalpear.snifferiety.registry.data.SnifferietyRegistryKeys;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.passive.SnifferEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
@@ -18,6 +19,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import java.util.stream.Stream;
 
 
 @Mixin(SnifferEntity.class)
@@ -34,19 +37,16 @@ public abstract class SnifferSeedDropMixin extends AnimalEntity {
      */
     @ModifyVariable(method = "dropSeeds", at = @At("STORE"), ordinal = 0)
     private ItemStack getSeed(ItemStack itemStack){
-        RandomCollection<Item> itemRandomCollection = new RandomCollection<>();
+        RandomCollection<ItemStack> itemRandomCollection = new RandomCollection<>();
         BlockPos pos = getDigPos().down();
 
         /*
-            Filter based on block that is being dug.
+            Filter based on block that is being dug and biome it is in.
          */
-        SnifferSeedRegistry.getSnifferDropMap().forEach((item, seedProperties) -> {
-            if (SnifferSeedRegistry.willItemDropFromBlock(item, this.getEntityWorld().getBlockState(pos)) && SnifferSeedRegistry.isBiomeValid(item,getWorld(), pos)) {
-                itemRandomCollection.add(seedProperties.getWeight(), item);
-            }
-        });
-
-        return new ItemStack(itemRandomCollection.next());
+        Stream<SnifferSeedEntry> entryStream = this.getWorld().getRegistryManager().get(SnifferietyRegistryKeys.SNIFFER_SEED_ENTRIES).stream()
+                .filter(snifferSeedEntry -> snifferSeedEntry.checkBlockConditions(this.getWorld().getBlockState(pos), this.getRandom()) && snifferSeedEntry.checkBiomeConditions(this.getWorld().getBiome(pos), this.getRandom()));
+        entryStream.forEach(snifferSeedEntry -> itemRandomCollection.add(snifferSeedEntry.getWeight(), snifferSeedEntry.getItem()));
+        return itemRandomCollection.next();
     }
 
 
@@ -55,7 +55,7 @@ public abstract class SnifferSeedDropMixin extends AnimalEntity {
      */
     @Inject(method = "isDiggable", at = @At("RETURN"), cancellable = true)
     private void injectMethod(BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
-        cir.setReturnValue(SnifferSeedRegistry.checkDiggability(this.getEntityWorld(), pos));
+        cir.setReturnValue(SnifferSeedEntries.checkDiggability(this.getWorld(), pos));
     }
 
     @Override

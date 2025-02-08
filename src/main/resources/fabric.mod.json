@@ -17,6 +17,9 @@
   "entrypoints": {
     "main": [
       "net.digitalpear.snifferiety.Snifferiety"
+    ],
+    "fabric-datagen": [
+          "net.digitalpear.snifferiety.SnifferietyDataGeneration"
     ]
   },
           "mixins": [

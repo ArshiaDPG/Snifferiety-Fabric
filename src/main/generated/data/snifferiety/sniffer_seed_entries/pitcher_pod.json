@@ -1,0 +1,18 @@
+{
+  "biome_conditions": [
+    {
+      "biome_condtion": "snifferiety:always_true"
+    }
+  ],
+  "block_conditions": [
+    {
+      "predicate_type": "minecraft:tag_match",
+      "tag": "minecraft:sniffer_diggable_block"
+    }
+  ],
+  "item": {
+    "Count": 1,
+    "id": "minecraft:pitcher_pod"
+  },
+  "weight": 77
+}
