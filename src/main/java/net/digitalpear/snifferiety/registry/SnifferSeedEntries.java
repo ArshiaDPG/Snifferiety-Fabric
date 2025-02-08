@@ -28,12 +28,12 @@ public class SnifferSeedEntries {
 
     public static final RegistryKey<SnifferSeedEntry> TORCHFLOWER_SEEDS = of("torchflower_seeds");
     public static final RegistryKey<SnifferSeedEntry> PITCHER_POD = of("pitcher_pod");
-    public static final RegistryKey<SnifferSeedEntry> CHERRY_SAPLING = of("cherry_sapling");
+//    public static final RegistryKey<SnifferSeedEntry> CHERRY_SAPLING = of("cherry_sapling");
 
     public static void bootstrap(Registerable<SnifferSeedEntry> registry) {
         registry.register(TORCHFLOWER_SEEDS, defaultSeed(Items.TORCHFLOWER_SEEDS));
         registry.register(PITCHER_POD, defaultSeed(Items.PITCHER_POD));
-        registry.register(CHERRY_SAPLING, new SnifferSeedEntry(new ItemStack(Items.CHERRY_SAPLING), 400, List.of(new TagMatchRuleTest(BlockTags.DIRT)), List.of(new KeyMatchBiomeCondition(BiomeKeys.FOREST, true))));
+//        registry.register(CHERRY_SAPLING, new SnifferSeedEntry(new ItemStack(Items.CHERRY_SAPLING), 400, List.of(new TagMatchRuleTest(BlockTags.DIRT)), List.of(new KeyMatchBiomeCondition(BiomeKeys.FOREST, true))));
     }
     public static SnifferSeedEntry defaultSeed(Item item){
         RuleTest defaultRuleTest = new TagMatchRuleTest(BlockTags.SNIFFER_DIGGABLE_BLOCK);
