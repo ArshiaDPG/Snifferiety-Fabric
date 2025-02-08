@@ -1,5 +1,6 @@
 package net.digitalpear.snifferiety;
 
+import net.digitalpear.snifferiety.common.util.biome_conditions.BiomeConditionType;
 import net.digitalpear.snifferiety.registry.data.SnifferietyRegistries;
 import net.digitalpear.snifferiety.registry.data.SnifferietyRegistryKeys;
 import net.fabricmc.api.ModInitializer;
@@ -27,5 +28,7 @@ public class Snifferiety implements ModInitializer {
     public void onInitialize() {
         SnifferietyRegistryKeys.init();
         SnifferietyRegistries.init();
+
+        BiomeConditionType.init();
     }
 }

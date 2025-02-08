@@ -49,6 +49,6 @@ public class SnifferSeedEntries {
 
     public static Boolean checkDiggability(World entityWorld, BlockPos pos) {
         BlockState state = entityWorld.getBlockState(pos);
-        return entityWorld.getRegistryManager().get(SnifferietyRegistryKeys.SNIFFER_SEED_ENTRIES).stream().anyMatch(properties -> properties.getBlockConditions() != null && properties.getBlockConditions().stream().anyMatch(ruleTest -> ruleTest.test(state, entityWorld.getRandom())) && properties.checkBiomeConditions(entityWorld.getBiome(pos), entityWorld.getRandom()));
+        return entityWorld.getRegistryManager().get(SnifferietyRegistryKeys.SNIFFER_SEED_ENTRIES).stream().anyMatch(properties -> properties.getBlockConditions() != null && properties.checkBlockConditions(state, entityWorld.getRandom()) && properties.checkBiomeConditions(entityWorld.getBiome(pos), entityWorld.getRandom()));
     }
 }

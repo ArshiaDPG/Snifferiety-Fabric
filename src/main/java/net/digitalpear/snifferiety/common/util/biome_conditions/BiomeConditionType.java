@@ -10,6 +10,9 @@ public interface BiomeConditionType<T extends BiomeCondition> {
     BiomeConditionType<KeyMatchBiomeCondition> KEY_MATCH = register("key_match", KeyMatchBiomeCondition.CODEC);
     BiomeConditionType<TagMatchBiomeCondition> TAG_MATCH = register("tag_match", TagMatchBiomeCondition.CODEC);
 
+    static void init() {
+    }
+
     Codec<T> codec();
     static <P extends BiomeCondition> BiomeConditionType<P> register(String id, Codec<P> codec) {
         return Registry.register(SnifferietyRegistries.BIOME_CONDITION_TYPE, Snifferiety.id(id), () -> codec);

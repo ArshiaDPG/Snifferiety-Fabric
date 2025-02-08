@@ -1,6 +1,7 @@
 package net.digitalpear.snifferiety.mixin;
 
 
+import net.digitalpear.snifferiety.Snifferiety;
 import net.digitalpear.snifferiety.common.util.SnifferSeedEntry;
 import net.digitalpear.snifferiety.registry.SnifferSeedEntries;
 import net.digitalpear.snifferiety.common.util.RandomCollection;
@@ -10,6 +11,7 @@ import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.passive.SnifferEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -43,9 +45,14 @@ public abstract class SnifferSeedDropMixin extends AnimalEntity {
         /*
             Filter based on block that is being dug and biome it is in.
          */
-        Stream<SnifferSeedEntry> entryStream = this.getWorld().getRegistryManager().get(SnifferietyRegistryKeys.SNIFFER_SEED_ENTRIES).stream()
-                .filter(snifferSeedEntry -> snifferSeedEntry.checkBlockConditions(this.getWorld().getBlockState(pos), this.getRandom()) && snifferSeedEntry.checkBiomeConditions(this.getWorld().getBiome(pos), this.getRandom()));
-        entryStream.forEach(snifferSeedEntry -> itemRandomCollection.add(snifferSeedEntry.getWeight(), snifferSeedEntry.getItem()));
+        Stream<SnifferSeedEntry> entryStream = this.getWorld().getRegistryManager().get(SnifferietyRegistryKeys.SNIFFER_SEED_ENTRIES).stream();
+        entryStream.filter(snifferSeedEntry -> snifferSeedEntry.checkBlockConditions(this.getWorld().getBlockState(pos), this.getRandom()) && snifferSeedEntry.checkBiomeConditions(this.getWorld().getBiome(pos), this.getRandom())).forEach(snifferSeedEntry -> {
+            if (!snifferSeedEntry.getItem().isOf(Items.AIR)){
+                itemRandomCollection.add(snifferSeedEntry.getWeight(), snifferSeedEntry.getItem());
+//                Snifferiety.LOGGER.info("Added seed: " + snifferSeedEntry.getItem().getName() + " with weight " + snifferSeedEntry.getWeight());
+//                Snifferiety.LOGGER.info("---------------------");
+            }
+        });
         return itemRandomCollection.next();
     }
 
